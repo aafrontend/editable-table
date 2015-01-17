@@ -17,7 +17,56 @@ CSS)
 Basic Usage
 -----------
 
-    <html>
+### HTML
+
+    <table id="secondDemo" class="table table-striped">
+      <thead><tr>
+        <th>Location</th>
+        <th>Expires</th>
+        <th>Count</th>
+        <th>Value</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td data-edit-type="select-locations">Adelaide</td>
+          <td data-edit-type="date">24-Jan-2015</td>
+          <td data-edit-type="ntext">8</td>
+          <td data-edit-type="vtext">5,000</td>
+        </tr>
+        <tr>
+          <td data-edit-type="select-locations">Brisbane</td>
+          <td data-edit-type="date">25-Jan-2015</td>
+          <td data-edit-type="ntext">8</td>
+          <td data-edit-type="vtext">15,000</td>
+        </tr>
+        <tr>
+          <td data-edit-type="select-locations">Melbourne</td>
+          <td data-edit-type="date">26-Jan-2015</td>
+          <td data-edit-type="ntext">9</td>
+          <td data-edit-type="vtext">8,000</td>
+        </tr>
+        <tr>
+          <td data-edit-type="select-locations">Sydney</td>
+          <td data-edit-type="date">27-Jan-2015</td>
+          <td data-edit-type="ntext">6</td>
+          <td data-edit-type="vtext">9,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+### Javascript
+
+    var locations = {
+        'Adelaide': 'Adelaide - South Australia',
+        'Brisbane': 'Brisbane - Queensland',
+        'Canberra': 'Canberra - Australian Capital Territory',
+        'Darwin': 'Darwin - Northern Territory',
+        'Hobart': 'Hobart - Tasmania',
+        'Melbourne': 'Melbourne - Victoria',
+        'Perth': 'Perth - Western Australia',
+        'Sydney': 'Sydney - New South Wales'
+    };
+    $('#table').editableTableWidget();
 
 Dependencies
 ------------
