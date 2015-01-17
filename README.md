@@ -66,7 +66,7 @@ Basic Usage
         'Perth': 'Perth - Western Australia',
         'Sydney': 'Sydney - New South Wales'
     };
-    $('#table').editableTableWidget();
+    $('#secondDemo').editableTableWidget();
 
 Dependencies
 ------------

@@ -106,7 +106,7 @@
       <h2>Usage</h2>
         <h3>HTML</h3>
         <p>When you're constructing the table, tag the &lt;td&gt; elements with a "data-edit-type"
-        attribute. Valid values are "date", "select-xxx", "ttext", "ntext" and "vtext".</p>
+        attribute. Valid values are "date", "select", "ttext", "ntext" and "vtext".</p>
         <table class="table"><thead><tr>
             <th style="min-width:150px">data-edit-type</th>
             <th>Description</th>
@@ -116,10 +116,10 @@
             <td>This field uses the bootstrap-datepicker, allowing the user to select a date from the
               datepicker pop-up.</td>
           </tr><tr>
-            <td>select-xxx</td>
-            <td>This one is a bit more tricky. The "xxx" bit of the data-edit-type will be used to find
-              a global variable, that it assumes is an associative array. For instance, the one used in
-              this demonstration looks like this:
+            <td>select</td>
+            <td>This one is a bit more tricky. You need to provide a data-edit-source whose value will
+              be used to find a global variable, that it assumes is an associative array. For instance,
+              the one used in this demonstration looks like this:
               <pre>
 var locations = {
   'Adelaide': 'Adelaide - South Australia',
@@ -131,7 +131,7 @@ var locations = {
   'Perth': 'Perth - Western Australia',
   'Sydney': 'Sydney - New South Wales'
 };</pre>
-              In this demo, the first element looks like this: &lt;td data-edit-type="select-locations"&gt;Adelaide&lt;/td&gt;.
+              In this demo, the first element looks like this: &lt;td data-edit-type="select" data-edit-source="locations"&gt;Adelaide&lt;/td&gt;.
               The key is displayed in the table, while the value is displayed in the dropdown.
             </td>
           </tr><tr>
