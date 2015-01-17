@@ -1,7 +1,7 @@
 editable-table
 =================
 
-This tiny (5.8KB, 200 lines, 3.3KB minified) jQuery plugin turns any table into an editable spreadsheet. Here are the key features:
+This tiny (5.6KB, 200 lines, 3.2KB minified) jQuery plugin turns any table into an editable spreadsheet. Here are the key features:
 
 * No magic - works on a normal HTML table (so you can plug it in into any web
 table)
@@ -28,25 +28,25 @@ Basic Usage
       </tr></thead>
       <tbody>
         <tr>
-          <td data-edit-type="select-locations">Adelaide</td>
+          <td data-edit-type="select" data-edit-source="locations">Adelaide</td>
           <td data-edit-type="date">24-Jan-2015</td>
           <td data-edit-type="ntext">8</td>
           <td data-edit-type="vtext">5,000</td>
         </tr>
         <tr>
-          <td data-edit-type="select-locations">Brisbane</td>
+          <td data-edit-type="select" data-edit-source="locations">Brisbane</td>
           <td data-edit-type="date">25-Jan-2015</td>
           <td data-edit-type="ntext">8</td>
           <td data-edit-type="vtext">15,000</td>
         </tr>
         <tr>
-          <td data-edit-type="select-locations">Melbourne</td>
+          <td data-edit-type="select" data-edit-source="locations">Melbourne</td>
           <td data-edit-type="date">26-Jan-2015</td>
           <td data-edit-type="ntext">9</td>
           <td data-edit-type="vtext">8,000</td>
         </tr>
         <tr>
-          <td data-edit-type="select-locations">Sydney</td>
+          <td data-edit-type="select" data-edit-source="locations">Sydney</td>
           <td data-edit-type="date">27-Jan-2015</td>
           <td data-edit-type="ntext">6</td>
           <td data-edit-type="vtext">9,000</td>

@@ -41,8 +41,6 @@ $.fn.editableTableWidget = function (options) {
 				var edittype = active.attr('data-edit-type');
 				if (edittype == null || typeof(edittype) == 'undefined') {
 					edittype = 'ttext';
-				} else if (edittype.substring(0, 6) == "select") {
-				    edittype = "select";
 				}
 				return edittype;
 			},
@@ -53,7 +51,7 @@ $.fn.editableTableWidget = function (options) {
 					if (edittype == "date") {
 						editors['date'].datepicker('update', active.text());
 					} else if (edittype == "select") {
-						var source = window[active.attr('data-edit-type').substring(7)];
+						var source = window[active.attr('data-edit-source')];
 						var sel = editors.select;
 						sel.empty();
 						$.each(source, function(key, value) {
