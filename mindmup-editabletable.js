@@ -4,7 +4,7 @@ $.fn.editableTableWidget = function (options) {
 	return $(this).each(function () {
 		var buildDefaultOptions = function () {
 				var opts = $.extend({}, $.fn.editableTableWidget.defaultOptions);
-				// opts.editor = opts.editor.clone();
+				opts.editor = opts.editor.clone();
 				return opts;
 			},
 			activeOptions = $.extend(buildDefaultOptions(), options),
@@ -35,7 +35,7 @@ $.fn.editableTableWidget = function (options) {
 					.hide()
 					.appendTo(element.parent())
 			},
-			editor = null,
+			editor = activeOptions.editor.css('position', 'absolute').hide().appendTo(element.parent()),
 			active = null,
 			getEditType = function() {
 				var edittype = active.attr('data-edit-type');
@@ -193,6 +193,6 @@ $.fn.editableTableWidget.defaultOptions = {
 		date: $('<input data-provide="datepicker">'),
 		select: $('<select>')
 	},
-	editor: null,
-	active: null,
+	editor: $('<input>'),
+	active: null
 };
