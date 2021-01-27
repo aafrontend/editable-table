@@ -10,11 +10,55 @@ $.fn.editableTableWidget = function (options) {
 			activeOptions = $.extend(buildDefaultOptions(), options),
 			ARROW_LEFT = 37, ARROW_UP = 38, ARROW_RIGHT = 39, ARROW_DOWN = 40, ENTER = 13, ESC = 27, TAB = 9,
 			element = $(this),
+			editors = {
+				ntext: activeOptions.editors.ntext
+					.css('position', 'absolute')
+					.hide()
+					.appendTo(element.parent()),
+				ttext: activeOptions.editors.ttext
+					.css('position', 'absolute')
+					.hide()
+					.appendTo(element.parent()),
+				vtext: activeOptions.editors.ttext
+					.css('position', 'absolute')
+					.hide()
+					.appendTo(element.parent()),
+				date: activeOptions.editors.date
+					.css('position', 'absolute')
+					.hide()
+					.appendTo(element.parent())
+					.datepicker({
+						format: 'dd-M-yyyy'
+					}),
+				select: activeOptions.editors.select
+					.css('position', 'absolute')
+					.hide()
+					.appendTo(element.parent())
+			},
 			editor = activeOptions.editor.css('position', 'absolute').hide().appendTo(element.parent()),
-			active,
+			active = null,
+			getEditType = function() {
+				var edittype = active.attr('data-edit-type');
+				if (edittype == null || typeof(edittype) == 'undefined') {
+					edittype = 'ttext';
+				}
+				return edittype;
+			},
 			showEditor = function (select) {
 				active = element.find('td:focus');
 				if (active.length) {
+					var edittype = getEditType();
+					if (edittype == "date") {
+						editors['date'].datepicker('update', active.text());
+					} else if (edittype == "select") {
+						var source = window[active.attr('data-edit-source')];
+						var sel = editors.select;
+						sel.empty();
+						$.each(source, function(key, value) {
+						    sel.append($("<option>", {value: key}).text(value));
+					    });
+					}
+					editor = editors[edittype];
 					editor.val(active.text())
 						.removeClass('error')
 						.show()
@@ -36,6 +80,13 @@ $.fn.editableTableWidget = function (options) {
 					return true;
 				}
 				originalContent = active.html();
+				var edittype = getEditType();
+				if (edittype == 'vtext') {
+					if (text !== '') {
+						var num = numeral(text);
+						text = num.format('0,0');
+					}
+				}
 				active.text(text).trigger(evt, text);
 				if (evt.result === false) {
 					active.html(originalContent);
@@ -53,41 +104,47 @@ $.fn.editableTableWidget = function (options) {
 				}
 				return [];
 			};
-		editor.blur(function () {
-			setActiveText();
-			editor.hide();
-		}).keydown(function (e) {
-			if (e.which === ENTER) {
+		$.each(editors, function(key, value) {
+			value.blur(function () {
 				setActiveText();
 				editor.hide();
-				active.focus();
-				e.preventDefault();
-				e.stopPropagation();
-			} else if (e.which === ESC) {
-				editor.val(active.text());
-				e.preventDefault();
-				e.stopPropagation();
-				editor.hide();
-				active.focus();
-			} else if (e.which === TAB) {
-				active.focus();
-			} else if (this.selectionEnd - this.selectionStart === this.value.length) {
-				var possibleMove = movement(active, e.which);
-				if (possibleMove.length > 0) {
-					possibleMove.focus();
+			}).keydown(function (e) {
+				if (e.which === ENTER) {
+					setActiveText();
+					editor.hide();
+					active.focus();
 					e.preventDefault();
 					e.stopPropagation();
+				} else if (e.which === ESC) {
+					editor.val(active.text());
+					e.preventDefault();
+					e.stopPropagation();
+					editor.hide();
+					active.focus();
+				} else if (e.which === TAB) {
+					active.focus();
+				} else if (this.selectionEnd - this.selectionStart === this.value.length) {
+					var possibleMove = movement(active, e.which);
+					if (possibleMove.length > 0) {
+						possibleMove.focus();
+						e.preventDefault();
+						e.stopPropagation();
+					}
 				}
-			}
-		})
-		.on('input paste', function () {
-			var evt = $.Event('validate');
-			active.trigger(evt, editor.val());
-			if (evt.result === false) {
-				editor.addClass('error');
-			} else {
-				editor.removeClass('error');
-			}
+			})
+			.on('input paste', function () {
+				var evt = $.Event('validate');
+				active.trigger(evt, editor.val());
+				if (evt.result === false) {
+					editor.addClass('error');
+				} else {
+					editor.removeClass('error');
+				}
+			})
+			.on('changeDate', function(e) {
+				active.text(e.format());
+				editor.datepicker('hide');
+			});
 		});
 		element.on('click keypress dblclick', showEditor)
 		.css('cursor', 'pointer')
@@ -113,10 +170,13 @@ $.fn.editableTableWidget = function (options) {
 		element.find('td').prop('tabindex', 1);
 
 		$(window).on('resize', function () {
+			if (editor == null) {
+				return;
+			}
 			if (editor.is(':visible')) {
 				editor.offset(active.offset())
-				.width(active.width())
-				.height(active.height());
+					.width(active.width())
+					.height(active.height());
 			}
 		});
 	});
@@ -126,6 +186,13 @@ $.fn.editableTableWidget.defaultOptions = {
 	cloneProperties: ['padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
 					  'text-align', 'font', 'font-size', 'font-family', 'font-weight',
 					  'border', 'border-top', 'border-bottom', 'border-left', 'border-right'],
-	editor: $('<input>')
+	editors: {
+		ntext: $('<input type="number" class="text-right">'),
+		ttext: $('<input type="text">'),
+		vtext: $('<input type="text">'),
+		date: $('<input data-provide="datepicker">'),
+		select: $('<select>')
+	},
+	editor: $('<input>'),
+	active: null
 };
-
